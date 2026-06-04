@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Literal
 
 from koguchi.events import ExecutionEvent
-from koguchi.hashchain import compute_hash
+from koguchi.proxy import _make_event
 from koguchi.store import ExecutionStore
 
 
@@ -58,31 +58,27 @@ def reconcile(workspace_dir: str, store: ExecutionStore) -> list[ReconciliationF
         expected_digest = envelope.expected_result_digest
 
         if not exists:
-            # workspace に対応する変化なし → 実行前に落ちたか実行失敗と推定
             diagnosis: DiagnosisType = "pending_not_executed"
             confidence = 0.85
             detail = f"{target} は存在しない"
         else:
-            # workspace に変化あり → 副作用は起きたが commit 記録に失敗
             diagnosis = "pending_executed_unconfirmed"
             confidence = 0.85
             if expected_digest and actual_digest:
                 confidence = 0.95 if actual_digest == expected_digest else 0.70
             detail = f"{target} が存在する（digest={actual_digest}）"
 
-        finding = ReconciliationFinding(
-            diagnosis=diagnosis,
-            record_id=pending.record_id,
-            target=str(target),
-            confidence=confidence,
-            detail=detail,
-        )
-        findings.append(finding)
+        findings.append(ReconciliationFinding(
+            diagnosis=diagnosis, record_id=pending.record_id,
+            target=str(target), confidence=confidence, detail=detail,
+        ))
         _append_reconciliation_event(store, pending.record_id, diagnosis, confidence, detail)
 
-    # --- committed event との照合 ---
-    committed_records = _all_committed(store)
-    for record_id, committed in committed_records.items():
+    # --- committed event との照合（store.committed() 経由）---
+    committed_by_record: dict[str, ExecutionEvent] = {
+        ev.record_id: ev for ev in store.committed()
+    }
+    for record_id, committed in committed_by_record.items():
         envelope = committed.envelope
         if envelope is None:
             continue
@@ -105,26 +101,20 @@ def reconcile(workspace_dir: str, store: ExecutionStore) -> list[ReconciliationF
             detail = f"{target} の内容が記録と食い違う"
 
         findings.append(ReconciliationFinding(
-            diagnosis=diagnosis,
-            record_id=record_id,
-            target=str(target),
-            confidence=confidence,
-            detail=detail,
+            diagnosis=diagnosis, record_id=record_id,
+            target=str(target), confidence=confidence, detail=detail,
         ))
 
     # --- unrecorded_external_change の検出（INV-1c）---
     for path in workspace.rglob("*"):
         if not path.is_file():
             continue
-        # .tmp.* はプロキシ内部の作業ファイル
         if ".tmp." in path.name:
             continue
         if str(path) not in known_targets:
             finding = ReconciliationFinding(
-                diagnosis="unrecorded_external_change",
-                record_id=None,
-                target=str(path),
-                confidence=0.90,
+                diagnosis="unrecorded_external_change", record_id=None,
+                target=str(path), confidence=0.90,
                 detail=f"{path} は Store に対応 record がない",
             )
             findings.append(finding)
@@ -135,27 +125,6 @@ def reconcile(workspace_dir: str, store: ExecutionStore) -> list[ReconciliationF
     return findings
 
 
-def _all_committed(store: ExecutionStore) -> dict[str, ExecutionEvent]:
-    """committed event を record_id → event の辞書で返す簡易ヘルパー。"""
-    result: dict[str, ExecutionEvent] = {}
-    if not hasattr(store, "_conn"):
-        import warnings
-        warnings.warn(
-            "ExecutionStore に committed() が未実装のため committed 照合をスキップします "
-            "(Phase 2 で committed() を追加予定)",
-            RuntimeWarning, stacklevel=2,
-        )
-        return result
-    import json
-    rows = store._conn.execute(  # type: ignore[attr-defined]
-        "SELECT payload FROM execution_events WHERE event_type = 'execution_committed' ORDER BY rowid"
-    ).fetchall()
-    for r in rows:
-        ev = ExecutionEvent(**json.loads(r[0]))
-        result[ev.record_id] = ev
-    return result
-
-
 def _append_reconciliation_event(
     store: ExecutionStore,
     record_id: str | None,
@@ -163,29 +132,13 @@ def _append_reconciliation_event(
     confidence: float,
     detail: str,
 ) -> None:
-    from koguchi.hashchain import compute_hash
-
-    event_id = str(uuid.uuid4())
-    timestamp = datetime.now(timezone.utc)
-    rid = record_id or f"reconcile-{event_id}"
+    rid = record_id or f"reconcile-{uuid.uuid4()}"
     prev = store.last_hash()
-    payload = {
-        "event_id": event_id,
-        "record_id": rid,
-        "timestamp": timestamp.isoformat(),
-        "event_type": "reconciliation_observed",
-        "previous_hash": prev,
-        "confidence": confidence,
-    }
-    h = compute_hash(prev, payload)
-    event = ExecutionEvent(
-        event_id=event_id,
+    event = _make_event(
         record_id=rid,
-        timestamp=timestamp,
         event_type="reconciliation_observed",
-        confidence=confidence,
         previous_hash=prev,
-        hash=h,
+        confidence=confidence,
         error_digest=hashlib.sha256(detail.encode()).hexdigest(),
     )
     try:

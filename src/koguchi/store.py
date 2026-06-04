@@ -1,11 +1,12 @@
-import sqlite3
 import json
+import sqlite3
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Protocol
 
-from koguchi.events import ExecutionEvent
-from koguchi.hashchain import GENESIS_HASH, compute_hash, canonical_serialize
 from koguchi.errors import StoreWriteError
+from koguchi.events import ExecutionEvent
+from koguchi.hashchain import GENESIS_HASH, compute_hash
 
 
 class ExecutionStore(Protocol):
@@ -21,6 +22,18 @@ class ExecutionStore(Protocol):
     def pending(self) -> list[ExecutionEvent]:
         """intent_pending のまま execution_committed / execution_failed で閉じていない event。
         reconciliation の入力となる。"""
+
+    def committed(self) -> list[ExecutionEvent]:
+        """execution_committed event の一覧を時系列で返す。"""
+
+
+@dataclass
+class ChainFinding:
+    ok: bool
+    row_index: int | None
+    event_id: str | None
+    diagnosis: str   # "ok" | "previous_hash_mismatch" | "hash_mismatch"
+    detail: str
 
 
 class SQLiteExecutionStore:
@@ -95,3 +108,60 @@ class SQLiteExecutionStore:
             ORDER BY rowid
         """).fetchall()
         return [ExecutionEvent(**json.loads(r[0])) for r in rows]
+
+    def committed(self) -> list[ExecutionEvent]:
+        """execution_committed event の一覧を時系列で返す。"""
+        rows = self._conn.execute(
+            "SELECT payload FROM execution_events"
+            " WHERE event_type = 'execution_committed' ORDER BY rowid"
+        ).fetchall()
+        return [ExecutionEvent(**json.loads(r[0])) for r in rows]
+
+    def verify_chain(self) -> list[ChainFinding]:
+        """hash chain の整合性を検証する。
+
+        各 event について:
+        - previous_hash が直前 event の hash と一致するか（chain linkage）
+        - 保存ペイロードから hash を再計算し、記録値と一致するか（tampering 検出）
+
+        改竄・ロスト・順序破壊があれば ok=False の ChainFinding を返す。
+        正常なら空リストを返す。
+        """
+        rows = self._conn.execute(
+            "SELECT payload, hash FROM execution_events ORDER BY rowid"
+        ).fetchall()
+        findings: list[ChainFinding] = []
+        prev_hash = GENESIS_HASH
+
+        for i, (payload_str, stored_hash) in enumerate(rows):
+            payload = json.loads(payload_str)
+            event_id = payload.get("event_id")
+
+            # chain linkage: previous_hash == 直前 event の hash
+            recorded_prev = payload.get("previous_hash", "")
+            if recorded_prev != prev_hash:
+                findings.append(ChainFinding(
+                    ok=False, row_index=i, event_id=event_id,
+                    diagnosis="previous_hash_mismatch",
+                    detail=(
+                        f"expected {prev_hash[:12]}… "
+                        f"got {str(recorded_prev)[:12]}…"
+                    ),
+                ))
+
+            # tampering 検出: ペイロードから hash を再計算
+            payload_for_hash = {k: v for k, v in payload.items() if k != "hash"}
+            recomputed = compute_hash(recorded_prev, payload_for_hash)
+            if recomputed != stored_hash:
+                findings.append(ChainFinding(
+                    ok=False, row_index=i, event_id=event_id,
+                    diagnosis="hash_mismatch",
+                    detail=(
+                        f"stored={stored_hash[:12]}… "
+                        f"recomputed={recomputed[:12]}…"
+                    ),
+                ))
+
+            prev_hash = stored_hash
+
+        return findings
