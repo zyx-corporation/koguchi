@@ -72,8 +72,8 @@ class ToolProxy:
 
         target = Path(envelope.target).resolve()
 
-        # workspace_dir 境界チェック
-        if not str(target).startswith(str(self._workspace)):
+        # workspace_dir 境界チェック（is_relative_to で前方一致漏れと .. 脱出を両方塞ぐ）
+        if not target.is_relative_to(self._workspace):
             raise WorkspaceBoundaryError(f"{target} は workspace_dir 外です")
 
         record_id = envelope.action_id
@@ -94,7 +94,7 @@ class ToolProxy:
             return ProxyResult.REJECTED
 
         # --- §6 atomic write ---
-        tmp_path = target.with_suffix(f".tmp.{record_id}")
+        tmp_path = target.parent / f"{target.name}.tmp.{record_id}"
         rename_succeeded = False
         try:
             target.parent.mkdir(parents=True, exist_ok=True)
