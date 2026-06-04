@@ -81,13 +81,6 @@ def reconcile(workspace_dir: str, store: ExecutionStore) -> list[ReconciliationF
         _append_reconciliation_event(store, pending.record_id, diagnosis, confidence, detail)
 
     # --- committed event との照合 ---
-    committed_record_ids: set[str] = set()
-    for pending in store.pending():
-        # pending() が返すのは未クローズの intent_pending のみ
-        pass
-
-    # committed record と workspace の照合は events_for を使う
-    # （ここでは committed 済みの record を全件スキャンする簡易実装）
     committed_records = _all_committed(store)
     for record_id, committed in committed_records.items():
         envelope = committed.envelope
@@ -144,18 +137,22 @@ def reconcile(workspace_dir: str, store: ExecutionStore) -> list[ReconciliationF
 
 def _all_committed(store: ExecutionStore) -> dict[str, ExecutionEvent]:
     """committed event を record_id → event の辞書で返す簡易ヘルパー。"""
-    # SQLiteExecutionStore の内部 conn に直接アクセスせず Protocol 経由で取得する方法は
-    # ないため、pending() の逆で committed を返す専用メソッドがないことへの妥協実装。
-    # Phase 2 で ExecutionStore に committed() を追加する。
     result: dict[str, ExecutionEvent] = {}
-    if hasattr(store, "_conn"):
-        import json
-        rows = store._conn.execute(  # type: ignore[attr-defined]
-            "SELECT payload FROM execution_events WHERE event_type = 'execution_committed' ORDER BY rowid"
-        ).fetchall()
-        for r in rows:
-            ev = ExecutionEvent(**json.loads(r[0]))
-            result[ev.record_id] = ev
+    if not hasattr(store, "_conn"):
+        import warnings
+        warnings.warn(
+            "ExecutionStore に committed() が未実装のため committed 照合をスキップします "
+            "(Phase 2 で committed() を追加予定)",
+            RuntimeWarning, stacklevel=2,
+        )
+        return result
+    import json
+    rows = store._conn.execute(  # type: ignore[attr-defined]
+        "SELECT payload FROM execution_events WHERE event_type = 'execution_committed' ORDER BY rowid"
+    ).fetchall()
+    for r in rows:
+        ev = ExecutionEvent(**json.loads(r[0]))
+        result[ev.record_id] = ev
     return result
 
 
