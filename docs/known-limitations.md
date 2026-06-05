@@ -47,3 +47,7 @@ v0.2 JSONL audit store is intended for local single-process use. Multi-process w
 ## Reconciliation scope
 
 v0.3 reconciliation is schema-level deferred verification. It does not perform tool-specific filesystem diffing, automatic repair, rollback, or continuous monitoring.
+
+## Rust chokepoint spike
+
+The v0.4 Rust chokepoint is an experimental external enforcement candidate. It does not provide seccomp, namespace isolation, container isolation, macOS sandboxing, or production-grade security hardening.

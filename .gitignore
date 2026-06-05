@@ -13,3 +13,4 @@ docs/joujou/
 .DS_Store
 .cursor/
 .vscode/
+crates/koguchi-chokepoint/target/

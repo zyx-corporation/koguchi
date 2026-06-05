@@ -12,11 +12,11 @@
 
 | Phase | 名称 | 状態 | 主成果物 |
 | -----:| ---- | ---- | -------- |
-| 0 | Foundation | ✅ | README, ADR 001-003, SLS+RDE 開発手法 |
+| [024] | Foundation | ✅ | README, ADR 001-003, SLS+RDE 開発手法 |
 | 1 | Side-Effect Chokepoint | ✅ | ToolProxy, ActionEnvelope, ExecutionStore, UNCONFIRMED, hash chain, reconciliation, ADR 004-005,007-008 |
-| 2 | Decision Logger | ✅ | Decision, DecisionStore, decision_ref, intent, context_ref, Context Resolver, ADR 006,009-011 |
+| [024] | Decision Logger | ✅ | Decision, DecisionStore, decision_ref, intent, context_ref, Context Resolver, ADR 006,009-011 |
 | 3 | Policy Gate | ✅ | PolicyDecision, PolicyRule, ExecutionPolicyGate, DenyShellExecution, ADR 012,014 |
-| 4 | AuditGate Integration | ✅ | AuditGate Protocol, KoguchiAuditGate, AuditResult, ADR 015 |
+| [024] | AuditGate Integration | ✅ | AuditGate Protocol, KoguchiAuditGate, AuditResult, ADR 015 |
 | 5 | Reconciliation v2 | ✅ | ReconciliableProvider, ProviderReconciler, ADR 013,016 |
 | 6 | Redaction / Secret Safety | ✅ | redacted view, secret guard, export API, ADR 017 |
 | 7 | RDE / T-RDE | ✅ | RdeHint, RdeReview, T-RDE helpers, ADR 018 |
@@ -30,8 +30,8 @@
 |------|------|------|
 | v0.2 | Persistent Audit Store | ✅ | JsonlAuditEventSink, JSONL append-only, schema version, ADR 022 |
 | v0.3 | Reconciliation Scheduler | ✅ | ReconciliationScheduler, schema-level verification, ADR 023 |
-| v0.4 | Rust Chokepoint Spike | Next | Rust process boundary, command mediation |
-| v0.5 | Dashboard Observation Plane | audit viewer, runtime status viewer |
+| v0.4 | Rust Chokepoint Spike | ✅ | Rust crate, JSON protocol, Python client, ADR 024 |
+| v0.5 | Dashboard Observation Plane | Next | audit viewer, runtime status viewer |
 | Future | Remote API, OS sandbox, network namespace, macOS sandbox | |
 
 ## 1. 位置づけ

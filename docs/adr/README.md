@@ -81,6 +81,12 @@ Koguchi の設計判断を append-only で記録する。変更時は既存 ADR 
 | [022](ADR-022-persistent-audit-store.md) | Persistent Audit Store | Accepted | JsonlAuditEventSink, JSONL append-only |
 | [023](ADR-023-reconciliation-scheduler.md) | Reconciliation Scheduler | Accepted | ReconciliationScheduler, schema-level deferred verification |
 
+## Rust Chokepoint
+
+| ADR | Title | Status | Summary |
+| --- | --- | --- | --- |
+| [024](ADR-024-rust-chokepoint-spike.md) | Rust Chokepoint Spike | Accepted | Rust crate, JSON protocol, Python client |
+
 ## Integration
 
 | ADR | Title | Status | Summary |

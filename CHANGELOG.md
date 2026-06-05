@@ -98,3 +98,21 @@ v0.1.0-dev-preview preserves the Phase 0–10 architectural structure and conver
 - Reconciliation is schema-level only; no filesystem diff or auto-repair
 - Denied/error events are skipped
 - Daemon/cron/background worker not implemented
+
+## v0.4.0-dev
+
+### Added
+
+- Rust chokepoint spike: `crates/koguchi-chokepoint/`
+- JSON stdin/stdout protocol (write_text, read_text)
+- Workspace boundary + path traversal denial
+- `RustChokepointClient` Python client
+- `ChokepointResult`, `ChokepointUnavailableError`, `ChokepointProtocolError`
+- `examples/rust_chokepoint_spike.py`
+- ADR-024
+
+### Notes
+
+- Not a security sandbox
+- Rust binary is optional spike; Python client gracefully handles missing binary
+- Seccomp/namespace/container/sandbox not implemented
