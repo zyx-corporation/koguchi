@@ -3,7 +3,6 @@ import pytest
 
 from koguchi.errors import EnvelopeRequiredError
 from koguchi.proxy import ToolProxy
-from koguchi.store import SQLiteExecutionStore
 
 
 def test_managed_write_requires_proxy_and_envelope(workspace, store):

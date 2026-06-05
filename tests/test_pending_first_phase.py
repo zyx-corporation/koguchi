@@ -1,5 +1,4 @@
 """INV-1b 第一相: intent_pending を書けない場合、副作用を起こさず REJECTED を返す。"""
-import pytest
 
 from koguchi.errors import StoreWriteError
 from koguchi.events import ProxyResult

@@ -1,0 +1,13 @@
+{
+  "err.envelope_required": "ActionEnvelope is required",
+  "err.workspace_boundary": "{{target}} is outside workspace_dir",
+  "err.decision_store_record_failed": "DecisionStore record failed: {{error}}",
+  "reconcile.target_not_found": "{{target}} does not exist",
+  "reconcile.target_exists_unconfirmed": "{{target}} exists (digest={{digest}})",
+  "reconcile.target_deleted": "{{target}} does not exist (possibly deleted)",
+  "reconcile.target_consistent": "{{target}} matches the record",
+  "reconcile.target_diverged": "{{target}} content diverges from the record",
+  "reconcile.unrecorded_external_change": "{{path}} has no corresponding record in Store",
+  "chain.previous_hash_mismatch": "expected {{expected}}… got {{actual}}…",
+  "chain.hash_mismatch": "stored={{stored}}… recomputed={{recomputed}}…"
+}

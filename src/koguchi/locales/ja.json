@@ -1,0 +1,13 @@
+{
+  "err.envelope_required": "ActionEnvelope は必須です",
+  "err.workspace_boundary": "{{target}} は workspace_dir 外です",
+  "err.decision_store_record_failed": "DecisionStore record 失敗: {{error}}",
+  "reconcile.target_not_found": "{{target}} は存在しない",
+  "reconcile.target_exists_unconfirmed": "{{target}} が存在する（digest={{digest}}）",
+  "reconcile.target_deleted": "{{target}} が存在しない（削除の可能性）",
+  "reconcile.target_consistent": "{{target}} は記録と一致",
+  "reconcile.target_diverged": "{{target}} の内容が記録と食い違う",
+  "reconcile.unrecorded_external_change": "{{path}} は Store に対応 record がない",
+  "chain.previous_hash_mismatch": "expected {{expected}}… got {{actual}}…",
+  "chain.hash_mismatch": "stored={{stored}}… recomputed={{recomputed}}…"
+}

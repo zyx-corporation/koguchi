@@ -1,0 +1,13 @@
+{
+  "err.envelope_required": "ActionEnvelope이 필요합니다",
+  "err.workspace_boundary": "{{target}}이(가) workspace_dir 외부에 있습니다",
+  "err.decision_store_record_failed": "DecisionStore 기록 실패: {{error}}",
+  "reconcile.target_not_found": "{{target}}이(가) 존재하지 않습니다",
+  "reconcile.target_exists_unconfirmed": "{{target}}이(가) 존재합니다（digest={{digest}}）",
+  "reconcile.target_deleted": "{{target}}이(가) 존재하지 않습니다（삭제 가능성）",
+  "reconcile.target_consistent": "{{target}}이(가) 기록과 일치합니다",
+  "reconcile.target_diverged": "{{target}} 내용이 기록과 다릅니다",
+  "reconcile.unrecorded_external_change": "{{path}}에 해당하는 Store 기록이 없습니다",
+  "chain.previous_hash_mismatch": "예상 {{expected}}… 실제 {{actual}}…",
+  "chain.hash_mismatch": "저장={{stored}}… 재계산={{recomputed}}…"
+}

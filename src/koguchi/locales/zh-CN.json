@@ -1,0 +1,13 @@
+{
+  "err.envelope_required": "ActionEnvelope 是必需的",
+  "err.workspace_boundary": "{{target}} 位于 workspace_dir 之外",
+  "err.decision_store_record_failed": "DecisionStore 记录失败: {{error}}",
+  "reconcile.target_not_found": "{{target}} 不存在",
+  "reconcile.target_exists_unconfirmed": "{{target}} 存在（digest={{digest}}）",
+  "reconcile.target_deleted": "{{target}} 不存在（可能已被删除）",
+  "reconcile.target_consistent": "{{target}} 与记录一致",
+  "reconcile.target_diverged": "{{target}} 内容与记录不符",
+  "reconcile.unrecorded_external_change": "{{path}} 在 Store 中没有对应记录",
+  "chain.previous_hash_mismatch": "预期 {{expected}}… 实际 {{actual}}…",
+  "chain.hash_mismatch": "存储={{stored}}… 重新计算={{recomputed}}…"
+}

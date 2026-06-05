@@ -1,12 +1,13 @@
-from enum import Enum
-from pydantic import BaseModel
 from datetime import datetime
-from typing import Literal, Optional
+from enum import StrEnum
+from typing import Literal
+
+from pydantic import BaseModel
 
 from koguchi.envelope import ActionEnvelope
 
 
-class ProxyResult(str, Enum):
+class ProxyResult(StrEnum):
     SUCCESS     = "success"      # 副作用成功 + commit 記録成功
     FAILURE     = "failure"      # Proxy が成功完了を確認できなかった
     REJECTED    = "rejected"     # validate / pending 書込み前に弾かれた。副作用なし
@@ -23,17 +24,16 @@ class ExecutionEvent(BaseModel):               # append-only。状態は上書�
         "execution_failed",
         "reconciliation_observed",
     ]
-    envelope: Optional[ActionEnvelope] = None
-    result_digest: Optional[str] = None
-    error_digest: Optional[str] = None
-    side_effect_observed: Optional[
-        Literal["none", "partial", "unknown", "confirmed"]
-    ] = None                                   # Phase 1 の filesystem.write は none|confirmed のみ
-    confidence: Optional[float] = None         # reconciliation 診断用（最尤推定）
-    previous_hash: Optional[str] = None
+    envelope: ActionEnvelope | None = None
+    result_digest: str | None = None
+    error_digest: str | None = None
+    # Phase 1 の filesystem.write は none|confirmed のみ
+    side_effect_observed: Literal["none", "partial", "unknown", "confirmed"] | None = None
+    confidence: float | None = None         # reconciliation 診断用（最尤推定）
+    previous_hash: str | None = None
     hash: str
 
     # 縮退を防ぐ空フック（Phase 2 以降で埋まる）
-    intent: Optional[str] = None               # なぜ
-    decision_ref: Optional[str] = None         # Decision Logger が接続
-    context_ref: Optional[str] = None          # Context Resolver が接続
+    intent: str | None = None               # なぜ
+    decision_ref: str | None = None         # Decision Logger が接続
+    context_ref: str | None = None          # Context Resolver が接続
