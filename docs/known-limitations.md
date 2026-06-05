@@ -35,3 +35,11 @@ The current version assumes a cooperative or semi-trusted execution environment.
 ## Reconciliation
 
 Reconciliation is snapshot-based. It cannot distinguish between "side effect never happened" and "side effect happened then was externally reverted." Confidence values represent estimation, not probability.
+
+## Audit log integrity
+
+v0.2 persistent audit logs are append-oriented JSONL files. They are not cryptographically sealed and do not prevent local tampering.
+
+## Concurrent writes
+
+v0.2 JSONL audit store is intended for local single-process use. Multi-process write coordination is deferred.

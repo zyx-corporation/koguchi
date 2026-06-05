@@ -64,3 +64,19 @@ Strong isolation is deferred to future work, including Rust chokepoint and OS/co
 ### RDE Summary
 
 v0.1.0-dev-preview preserves the Phase 0–10 architectural structure and converts it into an externally reviewable Developer Preview. It adds documentation, examples, known limitations, and release boundaries without claiming completion or security hardening.
+
+## v0.2.0-dev
+
+### Added
+
+- `JsonlAuditEventSink` — persistent append-only JSONL audit store
+- `sanitize_audit_event()` — allowlist-based field extraction
+- `AuditStoreError`, `AuditSerializationError`, `AuditWriteError`
+- `examples/persistent_audit_store.py`
+- ADR-022
+
+### Notes
+
+- JSONL files are not cryptographically sealed
+- Single-process use only
+- Multi-process write coordination deferred

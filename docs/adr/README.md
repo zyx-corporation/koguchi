@@ -74,6 +74,12 @@ Koguchi の設計判断を append-only で記録する。変更時は既存 ADR 
 | [020](ADR-020-runtime-hardening.md) | Runtime Hardening | Accepted | RuntimeBoundary, DefaultRuntimeBoundary |
 | [021](ADR-021-service-runtime.md) | Service Runtime | Accepted | ServiceRuntime, AuditEventSink |
 
+## Audit Store
+
+| ADR | Title | Status | Summary |
+| --- | --- | --- | --- |
+| [022](ADR-022-persistent-audit-store.md) | Persistent Audit Store | Accepted | JsonlAuditEventSink, JSONL append-only |
+
 ## Integration
 
 | ADR | Title | Status | Summary |
