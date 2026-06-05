@@ -101,11 +101,12 @@ See [docs/known-limitations.md](docs/known-limitations.md).
 | 文書 | 説明 |
 |------|------|
 | [Architecture](docs/architecture.md) | 全体構造と責務分離 |
+| [Example Index](docs/examples/index.md) | 全 example 一覧と実行方法 |
 | [Getting Started](docs/dev/getting-started.md) | 開発環境セットアップ |
 | [Known Limitations](docs/known-limitations.md) | 現状の制約 |
-| [ADR](docs/adr/) | 設計判断の正本（001〜021） |
+| [ADR](docs/adr/) | 設計判断の正本（001〜028） |
 | [Roadmap](docs/roadmap.md) | 全体フェーズ計画 |
-| [Release Checklist](docs/release/v0.1-developer-preview-checklist.md) | v0.1 完了条件 |
+| [Release Notes](docs/release/) | リリースノートとチェックリスト |
 
 ## License
 

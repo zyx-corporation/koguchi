@@ -12,7 +12,11 @@ Koguchi の設計判断を append-only で記録する。変更時は既存 ADR 
 4. [015](ADR-015-audit-gate.md) — AuditGate
 5. [020](ADR-020-runtime-hardening.md) — Runtime Boundary
 6. [021](ADR-021-service-runtime.md) — Service Runtime
-7. その他は関心に応じて
+7. [026](ADR-026-serviceruntime-chokepoint-backend.md) — Execution Backend
+8. [025](ADR-025-dashboard-observation-plane.md) — Dashboard Observation Plane
+9. [028](ADR-028-dashboard-static-html-report.md) — Static HTML Report
+10. [027](ADR-027-persistent-reconciliation-result-store.md) — Persistent Result Store
+11. その他は関心に応じて
 
 ## Foundation
 
