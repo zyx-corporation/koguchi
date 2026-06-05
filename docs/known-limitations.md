@@ -46,7 +46,7 @@ v0.2 JSONL audit store is intended for local single-process use. Multi-process w
 
 ## Reconciliation scope
 
-v0.3 reconciliation is schema-level deferred verification. It does not perform tool-specific filesystem diffing, automatic repair, rollback, or continuous monitoring. Backend-specific reconciliation is under design in v0.10 — see `docs/release/v0.10-backend-reconciliation-design-gate.md`.
+v0.3 reconciliation is schema-level deferred verification. v0.10 contains a read-only filesystem diff reconciliation spike (`koguchi/reconciliation/filesystem_diff.py`). Production backend-specific reconciliation, Scheduler integration, ToolProxy integration, AuditStore/ResultStore persistence, automatic repair, and rollback remain unimplemented.
 
 ## Rust chokepoint spike
 
