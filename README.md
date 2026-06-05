@@ -20,6 +20,8 @@ It is intended for architectural review and local experimentation. It is not pro
 
 See [docs/known-limitations.md](docs/known-limitations.md).
 
+**Next:** v0.9 Documentation Polish — [scope definition](docs/release/v0.9-scope-definition.md).
+
 ## Core Idea
 
 ```
