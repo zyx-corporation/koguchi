@@ -31,8 +31,8 @@
 | v0.2 | Persistent Audit Store | ✅ | JsonlAuditEventSink, JSONL append-only, schema version, ADR 022 |
 | v0.3 | Reconciliation Scheduler | ✅ | ReconciliationScheduler, schema-level verification, ADR 023 |
 | v0.4 | Rust Chokepoint Spike | ✅ | Rust crate, JSON protocol, Python client, ADR 024 |
-| v0.5 | Dashboard Observation Plane | Next | audit viewer, runtime status viewer |
-| Future | Remote API, OS sandbox, network namespace, macOS sandbox | |
+| v0.5 | Dashboard Observation Plane | ✅ | DashboardSnapshot, text report, ADR 025 |
+| Future | Remote API, OS sandbox, network namespace, macOS sandbox | Next |
 
 ## 1. 位置づけ
 

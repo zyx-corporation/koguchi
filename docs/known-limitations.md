@@ -51,3 +51,7 @@ v0.3 reconciliation is schema-level deferred verification. It does not perform t
 ## Rust chokepoint spike
 
 The v0.4 Rust chokepoint is an experimental external enforcement candidate. It does not provide seccomp, namespace isolation, container isolation, macOS sandboxing, or production-grade security hardening.
+
+## Dashboard scope
+
+v0.5 dashboard support is read-only and local-first. It does not provide a web server, remote API, authentication, live updates, destructive controls, or production monitoring.

@@ -91,4 +91,5 @@ Koguchi の設計判断を append-only で記録する。変更時は既存 ADR 
 
 | ADR | Title | Status | Summary |
 | --- | --- | --- | --- |
+| [025](ADR-025-dashboard-observation-plane.md) | Dashboard Observation Plane | Accepted | DashboardSnapshot, read-only observation plane |
 | [019](ADR-019-joujou-integration.md) | JouJou Integration | Accepted | KoguchiTodoAuditGate, UnconfirmedSideEffectError |

@@ -116,3 +116,19 @@ v0.1.0-dev-preview preserves the Phase 0–10 architectural structure and conver
 - Not a security sandbox
 - Rust binary is optional spike; Python client gracefully handles missing binary
 - Seccomp/namespace/container/sandbox not implemented
+
+## v0.5.0-dev
+
+### Added
+
+- `DashboardObservationPlane` — read-only snapshot from audit + reconciliation + chokepoint
+- `AuditSummary`, `ReconciliationSummary`, `ChokepointSummary`
+- `DashboardBuilder`, `DashboardSnapshot`
+- `render_text()` text report
+- `examples/dashboard_observation.py`
+- ADR-025
+
+### Notes
+
+- Dashboard is observation plane only; no control actions
+- No web server, remote API, auth, or live updates
