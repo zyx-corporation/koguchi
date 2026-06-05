@@ -125,3 +125,17 @@ PYTHONPATH=src python examples/dashboard_static_html_report.py
 **期待出力**: `/tmp/koguchi-dashboard-report.html`。
 
 **注意**: HTML report は read-only review artifact。form / button / script を含まない。control plane / security proof / compliance certification ではない。
+
+---
+
+## filesystem_diff_reconciliation
+
+**目的**: Backend-specific な filesystem diff reconciliation の設計例。read-only な期待 vs 観測ファイル比較。
+
+**関連設計要素**: Scheduler, ExecutionBackend, AuditStore, ResultStore, v0.10 design gate
+
+**状態**: Example Design — 実装なし
+
+**参照**: [filesystem_diff_reconciliation.md](filesystem_diff_reconciliation.md)
+
+**注意**: この例は修復・上書き・削除・デプロイ・コミットを行わない。reconciliation は観測・照合であり、制御平面ではない。
