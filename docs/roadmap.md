@@ -6,6 +6,7 @@
 対象リポジトリ: `zyx-corporation/koguchi`
 状態: Draft v0.1
 関連ユースケース: JouJou / `joujou-core` / `joujou-todo-mcp`
+参照: [Getting Started](dev/getting-started.md) | [ADR](adr/) | [README](../README.md)
 
 ## 1. 位置づけ
 
