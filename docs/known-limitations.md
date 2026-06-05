@@ -46,7 +46,7 @@ v0.2 JSONL audit store is intended for local single-process use. Multi-process w
 
 ## Reconciliation scope
 
-v0.3 reconciliation is schema-level deferred verification. v0.10 contains a read-only filesystem diff reconciliation spike. v0.11 adds a ToolProxy-facing read-only reconciliation spike. v0.12 defines a Scheduler reconciliation design gate. Scheduler integration for reconciliation is design-gated but not implemented. Production ToolProxy reconciliation integration, CLI surface, AuditStore/ResultStore persistence, automatic repair, and rollback remain unimplemented.
+v0.3 reconciliation is schema-level deferred verification. v0.10 contains a read-only filesystem diff reconciliation spike. v0.11 adds a ToolProxy-facing read-only reconciliation spike. v0.12 defines a Scheduler reconciliation design gate. A Scheduler-originated read-only reconciliation request spike exists in v0.12. Production Scheduler integration, retry policy, repair policy, persistence, and CLI surface remain unimplemented. Production ToolProxy reconciliation integration, CLI surface, AuditStore/ResultStore persistence, automatic repair, and rollback remain unimplemented.
 
 ## Rust chokepoint spike
 
