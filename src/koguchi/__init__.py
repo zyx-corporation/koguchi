@@ -4,7 +4,14 @@ from koguchi.decision import Decision, DecisionStore, SQLiteDecisionStore, make_
 from koguchi.envelope import ActionEnvelope
 from koguchi.events import ExecutionEvent, ProxyResult
 from koguchi.i18n import get_locale, set_locale, t
-from koguchi.policy import ExecutionPolicyGate, PolicyDecision, PolicyGate, RedactionPolicy
+from koguchi.policy import (
+    DenyShellExecution,
+    ExecutionPolicyGate,
+    PolicyDecision,
+    PolicyGate,
+    RedactionPolicy,
+)
+from koguchi.provider_reconcile import ProviderReconciler, ReconciliableProvider
 from koguchi.proxy import ToolProxy
 from koguchi.store import ExecutionStore, SQLiteExecutionStore
 
@@ -15,12 +22,15 @@ __all__ = [
     "ContextResolver",
     "Decision",
     "DecisionStore",
+    "DenyShellExecution",
     "ExecutionEvent",
     "ExecutionPolicyGate",
     "KoguchiAuditGate",
     "PolicyDecision",
     "PolicyGate",
+    "ProviderReconciler",
     "ProxyResult",
+    "ReconciliableProvider",
     "RedactionPolicy",
     "ExecutionStore",
     "SQLiteDecisionStore",
