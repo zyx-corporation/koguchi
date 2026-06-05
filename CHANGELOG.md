@@ -204,3 +204,4 @@ This release provides a static, read-only HTML review artifact for the Koguchi /
 ### Added
 
 - `docs/release/v0.10-backend-reconciliation-design-gate.md` — backend-specific reconciliation design gate (no implementation)
+- `docs/examples/filesystem_diff_reconciliation.md` — filesystem diff reconciliation example design (no implementation)
