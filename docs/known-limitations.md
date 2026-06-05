@@ -22,7 +22,7 @@ Audit events are currently in-memory unless a custom `AuditEventSink` is provide
 
 ## Dashboard
 
-Dashboard support is observation-oriented only (`status()`, `events()`). Destructive control plane is not part of v0.1.
+Dashboard support is observation-oriented only (`DashboardSnapshot`, `render_text`, `render_html_report`). Destructive control plane is not part of any v0.x release. The Static HTML Report is a read-only review artifact — it does not execute, approve, rerun, repair, or mutate.
 
 ## Remote API
 
