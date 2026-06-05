@@ -24,3 +24,4 @@ Koguchi の設計判断を append-only で記録する。変更時は既存 ADR 
 | [018](ADR-018-rde-t-rde.md) | Phase 7 — RDE / T-RDE Integration | 7 | Accepted | RdeHint, RdeReview, T-RDE helpers, 自動裁定ではない |
 | [019](ADR-019-joujou-integration.md) | Phase 8 — JouJou Practical Integration | 8 | Accepted | TodoInput/Result, KoguchiTodoAuditGate, UnconfirmedSideEffectError |
 | [020](ADR-020-runtime-hardening.md) | Phase 9 — Runtime Hardening | 9 | Accepted | RuntimeBoundary, DefaultRuntimeBoundary, env filtering, Python限界の明示 |
+| [021](ADR-021-service-runtime.md) | Phase 10 — Service Runtime | 10 | Accepted | ServiceRuntime, AuditEventSink, observation plane |

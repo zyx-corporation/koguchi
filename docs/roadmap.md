@@ -22,7 +22,7 @@
 | 7 | RDE / T-RDE | ✅ | RdeHint, RdeReview, T-RDE helpers, ADR 018 |
 | 8 | JouJou Practical Integration | ✅ | TodoInput/Result, KoguchiTodoAuditGate, UnconfirmedSideEffectError, ADR 019 |
 | 9 | Runtime Hardening | ✅ | RuntimeBoundary, DefaultRuntimeBoundary, env filtering, ADR 020 |
-| 10 | Service Runtime | Next | daemon, API, dashboard |
+| 10 | Service Runtime | ✅ | ServiceRuntime, AuditEventSink, observation plane, ADR 021 |
 
 ## 1. 位置づけ
 
