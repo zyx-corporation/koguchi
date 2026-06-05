@@ -1,8 +1,11 @@
-"""Policy Gate — redaction_policy に基づく監査ログの開示制御。"""
+"""Policy Gate — redaction_policy に基づく監査ログの開示制御と実行前許可判定。"""
 
+from dataclasses import dataclass
 from enum import StrEnum
+from typing import Protocol
 
 from koguchi.decision import Decision
+from koguchi.envelope import ActionEnvelope
 from koguchi.events import ExecutionEvent
 
 REDACTED = "[REDACTED]"
@@ -76,3 +79,58 @@ class PolicyGate:
             data["context_snapshot"] = decision.context_snapshot
 
         return data
+
+
+# --- 実行前許可判定 (Phase 3) ---
+
+
+class PolicyDecision(StrEnum):
+    ALLOW = "allow"
+    DENY = "deny"
+    REQUIRE_APPROVAL = "require_approval"
+
+
+class PolicyRule(Protocol):
+    def evaluate(self, envelope: ActionEnvelope) -> PolicyDecision:
+        """ActionEnvelope を評価し、判定を返す。"""
+        ...
+
+
+@dataclass
+class PolicyResult:
+    decision: PolicyDecision
+    reason: str
+    rule_name: str | None = None
+
+
+class DenyShellExecution:
+    """shell.execute を拒否するルール。"""
+
+    def evaluate(self, envelope: ActionEnvelope) -> PolicyDecision:
+        if envelope.tool == "shell.execute":
+            return PolicyDecision.DENY
+        return PolicyDecision.ALLOW
+
+
+class ExecutionPolicyGate:
+    """複数の PolicyRule を評価し、最初の DENY で停止する実行時ゲート。"""
+
+    def __init__(self, rules: list[PolicyRule] | None = None):
+        self._rules: list[PolicyRule] = rules or []
+
+    def add_rule(self, rule: PolicyRule) -> None:
+        self._rules.append(rule)
+
+    def evaluate(self, envelope: ActionEnvelope) -> PolicyResult:
+        for rule in self._rules:
+            decision = rule.evaluate(envelope)
+            if decision == PolicyDecision.DENY:
+                return PolicyResult(
+                    decision=PolicyDecision.DENY,
+                    reason=f"denied by rule: {rule.__class__.__name__}",
+                    rule_name=rule.__class__.__name__,
+                )
+        return PolicyResult(
+            decision=PolicyDecision.ALLOW,
+            reason="all rules passed",
+        )

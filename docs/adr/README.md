@@ -17,3 +17,6 @@ Koguchi の設計判断を append-only で記録する。変更時は既存 ADR 
 | [ADR-011](ADR-011-decision-hash-chain.md) | DecisionStore の hash chain 化 | Accepted |
 | [ADR-012](ADR-012-policy-gate.md) | Policy Gate — 監査開示制御と `redaction_policy` | Accepted |
 | [ADR-013](ADR-013-reconcile-tool-specific.md) | reconcile — ツールタイプ別 pending 診断ロジック | Accepted |
+| [ADR-014](ADR-014-policy-gate-execution.md) | Phase 3 — Policy Gate（実行前許可判定）| Accepted |
+| [ADR-015](ADR-015-audit-gate.md) | Phase 4 — AuditGate Protocol と KoguchiAuditGate | Accepted |
+| [ADR-016](ADR-016-reconciliation-v2.md) | Phase 5 — Reconciliation v2（外部 API 照合）| Accepted |
