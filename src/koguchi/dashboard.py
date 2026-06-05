@@ -22,6 +22,7 @@ class AuditSummary:
     recent_request_ids: list[str] = field(default_factory=list)
     first_timestamp: str | None = None
     last_timestamp: str | None = None
+    backend_counts: dict[str, int] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -34,6 +35,7 @@ class AuditSummary:
             "recent_request_ids": self.recent_request_ids,
             "first_timestamp": self.first_timestamp,
             "last_timestamp": self.last_timestamp,
+            "backend_counts": self.backend_counts,
         }
 
 
@@ -121,6 +123,7 @@ class DashboardBuilder:
         malformed = 0
         tools: dict[str, int] = {}
         recent: list[str] = []
+        backend_counts: dict[str, int] = {}
         first_ts: str | None = None
         last_ts: str | None = None
 
@@ -147,6 +150,10 @@ class DashboardBuilder:
                     if first_ts is None:
                         first_ts = str(ts)
                     last_ts = str(ts)
+
+                be = event.get("execution_backend")
+                if be:
+                    backend_counts[be] = backend_counts.get(be, 0) + 1
             except Exception:
                 malformed += 1
 
@@ -158,6 +165,7 @@ class DashboardBuilder:
             malformed_events=malformed,
             tools=tools,
             recent_request_ids=recent,
+            backend_counts=backend_counts,
             first_timestamp=first_ts,
             last_timestamp=last_ts,
         )

@@ -3,6 +3,7 @@
 Tool Proxy の execution backend として機能し、RuntimeBoundary 判定、
 tool execution、audit emission を一貫して扱う。
 
+v0.6: execution_backend を optional inject 可能。
 Service Runtime は権限主体ではなく、観測可能な実行面である。
 security sandbox ではない。
 """
@@ -14,6 +15,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Protocol
 
+from koguchi.execution_backend import (
+    ExecutionBackend,
+    ExecutionBackendRequest,
+    PythonExecutionBackend,
+)
 from koguchi.runtime import RuntimeBoundary
 
 
@@ -37,7 +43,7 @@ class ServiceRuntimeResult:
 
 @dataclass
 class AuditEvent:
-    event_type: str  # "allow", "deny", "error"
+    event_type: str
     request_id: str
     tool_name: str
     allowed: bool
@@ -45,6 +51,7 @@ class AuditEvent:
     workspace: str
     timestamp: str
     error: str | None = None
+    execution_backend: str | None = None
 
 
 class AuditEventSink(Protocol):
@@ -77,9 +84,11 @@ class ServiceRuntime:
         self,
         runtime_boundary: RuntimeBoundary,
         event_sink: AuditEventSink | None = None,
+        execution_backend: ExecutionBackend | None = None,
     ) -> None:
         self._boundary = runtime_boundary
         self._sink = event_sink or InMemoryAuditEventSink()
+        self._backend = execution_backend or PythonExecutionBackend()
         self._started_at = datetime.now(UTC).isoformat()
 
     def execute(self, request: ServiceRuntimeRequest) -> ServiceRuntimeResult:
@@ -97,6 +106,7 @@ class ServiceRuntime:
                 reason=decision.reason,
                 workspace=str(request.workspace),
                 timestamp=datetime.now(UTC).isoformat(),
+                execution_backend="not_invoked",
             )
             self._sink.emit(event)
             return ServiceRuntimeResult(
@@ -105,51 +115,54 @@ class ServiceRuntime:
                 request_id=request_id,
             )
 
-        # tool execution — Phase 10 では stub
-        try:
-            result_data = self._execute_tool(tool, request.arguments)
-        except Exception as e:
+        be_result = self._backend.execute(
+            ExecutionBackendRequest(
+                request_id=request_id,
+                tool_name=tool,
+                arguments=request.arguments,
+                workspace=request.workspace,
+            )
+        )
+
+        if be_result.error and not be_result.allowed:
             event = AuditEvent(
                 event_type="error",
                 request_id=request_id,
                 tool_name=tool,
-                allowed=True,
+                allowed=be_result.allowed,
                 reason=decision.reason,
                 workspace=str(request.workspace),
                 timestamp=datetime.now(UTC).isoformat(),
-                error=str(e),
+                error=be_result.error,
+                execution_backend=be_result.backend_name,
             )
             self._sink.emit(event)
             return ServiceRuntimeResult(
-                allowed=True,
+                allowed=be_result.allowed,
                 reason=decision.reason,
-                error=str(e),
+                error=be_result.error,
                 request_id=request_id,
             )
 
         event = AuditEvent(
-            event_type="allow",
+            event_type="allow" if be_result.allowed else "deny",
             request_id=request_id,
             tool_name=tool,
-            allowed=True,
+            allowed=be_result.allowed,
             reason=decision.reason,
             workspace=str(request.workspace),
             timestamp=datetime.now(UTC).isoformat(),
+            execution_backend=be_result.backend_name,
         )
         self._sink.emit(event)
         return ServiceRuntimeResult(
-            allowed=True,
+            allowed=be_result.allowed,
             reason=decision.reason,
-            result=result_data,
+            result=be_result.result,
             request_id=request_id,
         )
 
-    def _execute_tool(self, tool: str, arguments: dict[str, Any]) -> Any:
-        """tool execution backend。Phase 10 では stub。"""
-        return {"tool": tool, "arguments": arguments, "status": "executed"}
-
     def status(self) -> dict[str, Any]:
-        """runtime status — observation plane のみ。"""
         sink = self._sink
         event_count = len(sink.events()) if isinstance(sink, InMemoryAuditEventSink) else 0
         return {
@@ -159,7 +172,6 @@ class ServiceRuntime:
         }
 
     def events(self) -> list[dict[str, Any]]:
-        """audit events を JSON serializable なリストとして返す。"""
         sink = self._sink
         if isinstance(sink, InMemoryAuditEventSink):
             return [
@@ -172,6 +184,7 @@ class ServiceRuntime:
                     "workspace": e.workspace,
                     "timestamp": e.timestamp,
                     "error": e.error,
+                    "execution_backend": e.execution_backend,
                 }
                 for e in sink.events()
             ]

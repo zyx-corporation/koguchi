@@ -40,6 +40,7 @@ _SAFE_ENV_KEYS = {"PATH", "HOME", "USER", "LANG", "SHELL", "PWD", "TMPDIR"}
 
 _DEFAULT_ALLOWED_TOOLS = {
     "filesystem.write",
+    "filesystem.read",
     "filesystem.mkdir",
     "network.http_get",
     "todo.create",

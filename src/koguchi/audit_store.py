@@ -14,6 +14,7 @@ from koguchi.service_runtime import AuditEvent
 _SCHEMA_VERSION = 1
 
 _ALLOWED_FIELDS = {
+    "execution_backend",
     "schema_version",
     "event_type",
     "request_id",
@@ -51,6 +52,7 @@ def sanitize_audit_event(event: AuditEvent) -> dict[str, Any]:
         "reason": event.reason,
         "workspace": event.workspace,
         "timestamp": event.timestamp,
+        "execution_backend": event.execution_backend,
         "error": event.error,
     }
     # 将来のフィールド追加で allowlist 外のキーが混入しないよう検証
