@@ -37,3 +37,4 @@ class ExecutionEvent(BaseModel):               # append-only。状態は上書�
     intent: str | None = None               # なぜ
     decision_ref: str | None = None         # Decision Logger が接続
     context_ref: str | None = None          # Context Resolver が接続
+    rde_ref: str | None = None              # RDE Review が接続（Phase 7）

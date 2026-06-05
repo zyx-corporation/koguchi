@@ -15,6 +15,15 @@ from koguchi.policy import (
 )
 from koguchi.provider_reconcile import ProviderReconciler, ReconciliableProvider
 from koguchi.proxy import ToolProxy
+from koguchi.rde import (
+    RdeCategory,
+    RdeHint,
+    RdeReview,
+    assert_no_unresolved_hidden,
+    assert_preserved,
+    assert_risk_declared,
+    make_review,
+)
 from koguchi.store import ExecutionStore, SQLiteExecutionStore
 
 __all__ = [
@@ -32,9 +41,16 @@ __all__ = [
     "PolicyGate",
     "ProviderReconciler",
     "ProxyResult",
+    "RdeCategory",
+    "RdeHint",
+    "RdeReview",
     "ReconciliableProvider",
     "RedactionPolicy",
+    "assert_no_unresolved_hidden",
+    "assert_preserved",
+    "assert_risk_declared",
     "export_events",
+    "make_review",
     "redact_dict",
     "ExecutionStore",
     "SQLiteDecisionStore",
