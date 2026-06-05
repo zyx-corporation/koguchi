@@ -1,0 +1,37 @@
+# Known Limitations
+
+## Not a security sandbox
+
+The current implementation does not provide strong isolation.
+
+## Python best-effort boundary
+
+RuntimeBoundary can prevent ordinary tool execution paths but cannot prevent arbitrary Python-level escape in a hostile runtime.
+
+## Deferred isolation mechanisms
+
+- Rust chokepoint
+- seccomp
+- container isolation
+- network namespace
+- macOS sandbox
+
+## Audit persistence
+
+Audit events are currently in-memory unless a custom `AuditEventSink` is provided. Persistent audit store is deferred to v0.2.
+
+## Dashboard
+
+Dashboard support is observation-oriented only (`status()`, `events()`). Destructive control plane is not part of v0.1.
+
+## Remote API
+
+Remote API server is not part of v0.1.
+
+## Threat model
+
+The current version assumes a cooperative or semi-trusted execution environment. Hostile code execution requires stronger isolation than v0.1 provides.
+
+## Reconciliation
+
+Reconciliation is snapshot-based. It cannot distinguish between "side effect never happened" and "side effect happened then was externally reverted." Confidence values represent estimation, not probability.

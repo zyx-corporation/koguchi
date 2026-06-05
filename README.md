@@ -2,48 +2,33 @@
 
 Context-Aware Harness — Side-Effect Chokepoint
 
+Koguchi is a Context-Aware Harness reference implementation that routes tool execution through an accountable side-effect chokepoint.
+
 Koguchi は、AIエージェントやアプリケーションが外部世界へ副作用を起こすとき、その副作用を監査可能な実行来歴へ変換する Context-Aware Harness 基盤である。
 
-## 現在のステータス
+**Koguchi is not a security sandbox.** The current Python implementation provides best-effort runtime constraint checks. Strong isolation is deferred to Rust chokepoint and OS/container-level enforcement.
 
-| Phase | 名称 | 状態 |
-|-------|------|------|
-| 0 | Foundation — 仕様・ADR・開発手法 | ✅ |
-| 1 | Side-Effect Chokepoint — `filesystem.write` の監査 | ✅ |
-| 2 | Decision Logger — なぜ実行したかを記録 | ✅ |
-| 3 | Policy Gate — 実行前許可判定 | ✅ |
-| 4 | AuditGate Integration — アプリ抽象化層 | ✅ |
-| 5 | Reconciliation v2 — 外部 API 実状態照合 | ✅ |
-| 6 | Redaction / Secret Safety — 監査ログの安全な開示 | ✅ |
-| 7 | RDE / T-RDE — 意味変化監査 | ✅ |
-| 8 | JouJou Integration — 実用統合パターン | ✅ |
-| 9 | Runtime Hardening — 実行時境界 | ✅ |
-| 10 | Service Runtime — 責任ある実行面 | ✅ |
+**Koguchi は security sandbox ではない。** 現在の Python 実装は best-effort な実行時制約チェックを提供する。強い隔離は Rust chokepoint および OS/container レベルの機構に委ねる。
 
-## 主要概念
+## Current Status
 
-| 概念 | 説明 |
-|------|------|
-| **ActionEnvelope** | 副作用を包むラッパー。tool, target, parameters_digest, permission_scope, risk_class, redaction_policy を持つ |
-| **ExecutionEvent** | append-only のイベントレコード。intent_pending / execution_committed / execution_failed / reconciliation_observed の4種 |
-| **ExecutionStore** | 副作用の実行来歴を保持する append-only ストア。hash chain による改竄検出 |
-| **DecisionStore** | 意思決定の来歴を保持するストア。「なぜ」を記録。独立した hash chain を持つ |
-| **ToolProxy** | すべての管理対象副作用が通る単一の隘路 |
-| **PolicyGate** | 実行前に副作用の許可を判定する（allow / deny / require_approval） |
-| **AuditGate** | アプリケーションが依存する唯一の Koguchi インターフェース。内部実装を隠蔽 |
-| **Reconciliation** | Store と実世界（ファイルシステム／外部API）の照合。診断は最尤推定 |
-| **UNCONFIRMED** | 副作用は成功したが commit 記録に失敗した状態。Store には intent_pending が残る |
-| **RedactionPolicy** | 監査ログの開示制御（full / without_intent / without_context / minimal） |
+**v0.1 Developer Preview** — Phase 0〜10 complete.
 
-| **RDE / T-RDE** | 意味変化監査。preserved/transformed/supplemented/unresolved/risks/next_policy の6分類 |
+## Core Idea
 
-## インストール
+```
+Agent → ToolProxy → PolicyGate → ServiceRuntime → RuntimeBoundary → Tool Backend
+                                              ↘ AuditEventSink
+                                              ↘ Reconciliation Hook
+```
+
+## Installation
 
 ```bash
 pip install koguchi
 ```
 
-## クイックスタート
+## Quick Start
 
 ```python
 from koguchi import ToolProxy, SQLiteExecutionStore, ActionEnvelope
@@ -64,18 +49,13 @@ result = proxy.write_file(envelope=envelope, content=b"Hello, Koguchi")
 # ProxyResult.SUCCESS / FAILURE / REJECTED / UNCONFIRMED
 ```
 
-## ドキュメント
+## Minimal Example
 
-| 文書 | 説明 |
-|------|------|
-| [Getting Started](docs/dev/getting-started.md) | 開発環境セットアップと最初のステップ |
-| [AuditGate Integration](docs/dev/auditgate-integration.md) | アプリケーションへの Koguchi 組み込み |
-| [Reconciliation v2](docs/dev/reconciliation-v2.md) | 外部 API 実状態との照合 |
-| [Roadmap](docs/roadmap.md) | 全体ロードマップとフェーズ計画 |
-| [ADR](docs/adr/) | Architecture Decision Records（設計判断の正本） |
-| [API Docs](docs/api/) | `make docs` で生成 |
+```bash
+python examples/minimal_tool_proxy.py
+```
 
-## 品質
+## Running Tests
 
 ```bash
 make quality   # ruff + mypy + pytest
@@ -83,11 +63,42 @@ make quality   # ruff + mypy + pytest
 
 | 指標 | 値 |
 |------|-----|
-| テスト | 81 passed |
-| カバレッジ | 91% |
+| テスト | 117 passed |
 | 型チェック | mypy strict |
 | サポート Python | 3.11 / 3.12 / 3.13 |
 
-## ライセンス
+## Architecture Overview
+
+See [docs/architecture.md](docs/architecture.md) for the full architecture.
+
+### Key Concepts
+
+| 概念 | 説明 |
+|------|------|
+| **ToolProxy** | Agent から見た唯一の副作用実行経路。PolicyGate と ServiceRuntime を接続 |
+| **PolicyGate** | envelope / policy 上の許可判定（allow/deny/require_approval） |
+| **RuntimeBoundary** | tool / env / workspace 上の実行時境界判定 |
+| **ServiceRuntime** | RuntimeBoundary 判定、tool execution、audit event emission を束ねる accountable execution surface |
+| **AuditGate** | アプリケーションが依存する唯一の Koguchi インターフェース |
+| **Reconciliation** | Store と実世界の照合。診断は最尤推定 |
+| **RedactionPolicy** | 監査ログ開示制御（full/without_intent/without_context/minimal） |
+| **RDE / T-RDE** | 意味変化監査。RDE は PolicyGate の代替でも security sandbox でもない |
+
+## Security Model
+
+See [docs/known-limitations.md](docs/known-limitations.md).
+
+## Documentation
+
+| 文書 | 説明 |
+|------|------|
+| [Architecture](docs/architecture.md) | 全体構造と責務分離 |
+| [Getting Started](docs/dev/getting-started.md) | 開発環境セットアップ |
+| [Known Limitations](docs/known-limitations.md) | 現状の制約 |
+| [ADR](docs/adr/) | 設計判断の正本（001〜021） |
+| [Roadmap](docs/roadmap.md) | 全体フェーズ計画 |
+| [Release Checklist](docs/release/v0.1-developer-preview-checklist.md) | v0.1 完了条件 |
+
+## License
 
 [LICENSE](LICENSE)

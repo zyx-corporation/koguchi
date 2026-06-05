@@ -24,6 +24,16 @@
 | 9 | Runtime Hardening | ✅ | RuntimeBoundary, DefaultRuntimeBoundary, env filtering, ADR 020 |
 | 10 | Service Runtime | ✅ | ServiceRuntime, AuditEventSink, observation plane, ADR 021 |
 
+## After v0.1
+
+| v0.x | 名称 | 内容 |
+|------|------|------|
+| v0.2 | Persistent Audit Store | JSONL/SQLite sink, audit query API, retention policy |
+| v0.3 | Reconciliation Scheduler | scheduled reconciliation, drift report |
+| v0.4 | Rust Chokepoint Spike | Rust process boundary, command mediation |
+| v0.5 | Dashboard Observation Plane | audit viewer, runtime status viewer |
+| Future | Remote API, OS sandbox, network namespace, macOS sandbox | |
+
 ## 1. 位置づけ
 
 Koguchi は、AIエージェントやアプリケーションが外部世界へ副作用を起こすとき、その副作用を監査可能な来歴へ変換するための基盤である。
