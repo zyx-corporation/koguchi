@@ -29,8 +29,8 @@
 | v0.x | 名称 | 内容 |
 |------|------|------|
 | v0.2 | Persistent Audit Store | ✅ | JsonlAuditEventSink, JSONL append-only, schema version, ADR 022 |
-| v0.3 | Reconciliation Scheduler | Next | scheduled reconciliation, drift report |
-| v0.4 | Rust Chokepoint Spike | Rust process boundary, command mediation |
+| v0.3 | Reconciliation Scheduler | ✅ | ReconciliationScheduler, schema-level verification, ADR 023 |
+| v0.4 | Rust Chokepoint Spike | Next | Rust process boundary, command mediation |
 | v0.5 | Dashboard Observation Plane | audit viewer, runtime status viewer |
 | Future | Remote API, OS sandbox, network namespace, macOS sandbox | |
 

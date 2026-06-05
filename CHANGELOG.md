@@ -80,3 +80,21 @@ v0.1.0-dev-preview preserves the Phase 0–10 architectural structure and conver
 - JSONL files are not cryptographically sealed
 - Single-process use only
 - Multi-process write coordination deferred
+
+## v0.3.0-dev
+
+### Added
+
+- `ReconciliationScheduler` — deferred verification from audit events
+- `ReconciliationJob`, `ReconciliationResult`, `ReconciliationStatus`
+- `InMemoryReconciliationJobStore`
+- Schema-level verification (request_id, tool_name, allowed check)
+- Duplicate job prevention via deterministic job_id
+- `examples/reconciliation_scheduler.py`
+- ADR-023
+
+### Notes
+
+- Reconciliation is schema-level only; no filesystem diff or auto-repair
+- Denied/error events are skipped
+- Daemon/cron/background worker not implemented

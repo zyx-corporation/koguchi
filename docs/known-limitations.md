@@ -43,3 +43,7 @@ v0.2 persistent audit logs are append-oriented JSONL files. They are not cryptog
 ## Concurrent writes
 
 v0.2 JSONL audit store is intended for local single-process use. Multi-process write coordination is deferred.
+
+## Reconciliation scope
+
+v0.3 reconciliation is schema-level deferred verification. It does not perform tool-specific filesystem diffing, automatic repair, rollback, or continuous monitoring.

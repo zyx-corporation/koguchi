@@ -79,6 +79,7 @@ Koguchi の設計判断を append-only で記録する。変更時は既存 ADR 
 | ADR | Title | Status | Summary |
 | --- | --- | --- | --- |
 | [022](ADR-022-persistent-audit-store.md) | Persistent Audit Store | Accepted | JsonlAuditEventSink, JSONL append-only |
+| [023](ADR-023-reconciliation-scheduler.md) | Reconciliation Scheduler | Accepted | ReconciliationScheduler, schema-level deferred verification |
 
 ## Integration
 
