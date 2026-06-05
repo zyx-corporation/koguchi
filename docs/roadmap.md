@@ -18,8 +18,8 @@
 | 3 | Policy Gate | ✅ | PolicyDecision, PolicyRule, ExecutionPolicyGate, DenyShellExecution, ADR 012,014 |
 | 4 | AuditGate Integration | ✅ | AuditGate Protocol, KoguchiAuditGate, AuditResult, ADR 015 |
 | 5 | Reconciliation v2 | ✅ | ReconciliableProvider, ProviderReconciler, ADR 013,016 |
-| 6 | Redaction / Secret Safety | Next | redacted view, safe audit export, secret/PII guard |
-| 7 | RDE / T-RDE | Planned | RdeHint, RdeReview, T-RDE tests |
+| 6 | Redaction / Secret Safety | ✅ | redacted view, secret guard, export API, ADR 017 |
+| 7 | RDE / T-RDE | Next | RdeHint, RdeReview, T-RDE tests |
 | 8 | Multi-tool / Multi-provider | Planned | GitHub / Notion / Google Tasks, Provider adapter |
 | 9 | Runtime Hardening | Planned | sandbox, seccomp, Rust chokepoint |
 | 10 | Service Runtime | Planned | daemon, API, dashboard |

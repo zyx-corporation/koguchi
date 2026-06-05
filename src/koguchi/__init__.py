@@ -10,6 +10,8 @@ from koguchi.policy import (
     PolicyDecision,
     PolicyGate,
     RedactionPolicy,
+    export_events,
+    redact_dict,
 )
 from koguchi.provider_reconcile import ProviderReconciler, ReconciliableProvider
 from koguchi.proxy import ToolProxy
@@ -32,6 +34,8 @@ __all__ = [
     "ProxyResult",
     "ReconciliableProvider",
     "RedactionPolicy",
+    "export_events",
+    "redact_dict",
     "ExecutionStore",
     "SQLiteDecisionStore",
     "SQLiteExecutionStore",

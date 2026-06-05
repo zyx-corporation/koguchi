@@ -7,8 +7,14 @@ from typing import Protocol
 from koguchi.decision import Decision
 from koguchi.envelope import ActionEnvelope
 from koguchi.events import ExecutionEvent
+from koguchi.store import SQLiteExecutionStore
 
 REDACTED = "[REDACTED]"
+
+SECRET_PATTERNS = [
+    "token", "secret", "api_key", "apikey", "authorization",
+    "cookie", "password", "refresh_token", "access_token",
+]
 
 
 class RedactionPolicy(StrEnum):
@@ -79,6 +85,47 @@ class PolicyGate:
             data["context_snapshot"] = decision.context_snapshot
 
         return data
+
+    @staticmethod
+    def redact_events(
+        events: list[ExecutionEvent], policy: RedactionPolicy
+    ) -> list[dict[str, object]]:
+        """複数 event をまとめて redact する。"""
+        return [PolicyGate.redact_event(e, policy) for e in events]
+
+
+def redact_dict(data: dict[str, object]) -> dict[str, object]:
+    """再帰的に dict/list を走査し、secret-like key の value をマスクする。"""
+    result: dict[str, object] = {}
+    for key, value in data.items():
+        key_lower = key.lower()
+        if any(pattern in key_lower for pattern in SECRET_PATTERNS):
+            result[key] = REDACTED
+        elif isinstance(value, dict):
+            result[key] = redact_dict(value)
+        elif isinstance(value, list):
+            result[key] = [
+                redact_dict(item) if isinstance(item, dict) else item
+                for item in value
+            ]
+        else:
+            result[key] = value
+    return result
+
+
+def export_events(
+    store: SQLiteExecutionStore,
+    policy: RedactionPolicy,
+) -> list[dict[str, object]]:
+    """ExecutionStore から全 event を取得し redaction を適用して export する。"""
+    import json as _json
+
+    rows = store._conn.execute(
+        "SELECT payload FROM execution_events ORDER BY rowid"
+    ).fetchall()
+    events = [ExecutionEvent(**_json.loads(r[0])) for r in rows]
+    redacted = PolicyGate.redact_events(events, policy)
+    return [redact_dict(e) for e in redacted]
 
 
 # --- 実行前許可判定 (Phase 3) ---
