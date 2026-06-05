@@ -205,3 +205,5 @@ This release provides a static, read-only HTML review artifact for the Koguchi /
 
 - `docs/release/v0.10-backend-reconciliation-design-gate.md` — backend-specific reconciliation design gate (no implementation)
 - `docs/examples/filesystem_diff_reconciliation.md` — filesystem diff reconciliation example design (no implementation)
+- `src/koguchi/reconciliation/filesystem_diff.py` — read-only filesystem diff reconciliation spike
+- `docs/release/v0.10-filesystem-reconciliation-spike-closure.md` — v0.10 spike closure note
