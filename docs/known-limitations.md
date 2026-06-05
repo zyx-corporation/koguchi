@@ -55,3 +55,20 @@ The v0.4 Rust chokepoint is an experimental external enforcement candidate. It d
 ## Dashboard scope
 
 v0.5 dashboard support is read-only and local-first. It does not provide a web server, remote API, authentication, live updates, destructive controls, or production monitoring.
+
+## Dashboard scope
+
+v0.5 Dashboard Observation Plane is read-only and local-first.
+
+It does not provide:
+
+- web server
+- remote API
+- authentication
+- live updates
+- approval controls
+- tool execution
+- job rerun
+- repair / rollback
+- audit log mutation
+- production monitoring

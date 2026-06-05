@@ -132,3 +132,40 @@ v0.1.0-dev-preview preserves the Phase 0–10 architectural structure and conver
 
 - Dashboard is observation plane only; no control actions
 - No web server, remote API, auth, or live updates
+
+## v0.5.0-observation-preview
+
+### Status
+
+Observation Preview.
+
+This release provides a read-only operational awareness layer for the Koguchi / Context-Aware Harness reference implementation. It is intended for architectural review, local experimentation, and observation of audit / reconciliation / chokepoint state.
+
+It is not production-ready, not a security sandbox, and not a dashboard control plane.
+
+### Consolidated
+
+- ToolProxy as the single side-effect chokepoint
+- PolicyGate / RuntimeBoundary / ServiceRuntime responsibility separation
+- JSONL persistent audit records
+- Schema-level deferred reconciliation
+- Optional Rust external chokepoint candidate
+- Read-only dashboard observation plane
+
+### Quality
+
+- ruff: All checks passed
+- pytest: 161 passed
+- mypy: Success, 22 source files
+- Rust: 5 tests passed
+- examples: all verified
+
+### Deferred
+
+- ServiceRuntime optional chokepoint backend integration
+- Persistent Reconciliation Result Store
+- Dashboard Static HTML Report
+- remote API server
+- dashboard control plane
+- production hardening
+- full OS/container-level sandboxing

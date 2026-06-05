@@ -32,7 +32,7 @@
 | v0.3 | Reconciliation Scheduler | ✅ | ReconciliationScheduler, schema-level verification, ADR 023 |
 | v0.4 | Rust Chokepoint Spike | ✅ | Rust crate, JSON protocol, Python client, ADR 024 |
 | v0.5 | Dashboard Observation Plane | ✅ | DashboardSnapshot, text report, ADR 025 |
-| Future | Remote API, OS sandbox, network namespace, macOS sandbox | Next |
+| Future | Remote API, OS sandbox, network namespace, macOS sandbox | |
 
 ## 1. 位置づけ
 
@@ -562,3 +562,23 @@ Koguchi のロードマップは、次の一文に圧縮できる。
 逆に、Phase 1 が堅ければ、JouJou、Kotonoha、Sayane、他の MCP tool に対して、Koguchi を共通の副作用監査基盤として展開できる。
 
 Koguchi は、外部世界に触れる知性のための小さな虎口である。そこを通ったものだけが、あとから人間によって引き受け可能な来歴となる。
+
+## v0.5.0 Observation Preview
+
+Status: completed.
+
+- Dashboard Observation Plane
+- JSON serializable snapshot
+- Audit summary / Reconciliation summary / Chokepoint availability
+
+## v0.6 Candidate: ServiceRuntime Optional Chokepoint Backend Integration
+
+- Add optional RustChokepointClient backend to ServiceRuntime
+- Keep default backend unchanged
+- Preserve RuntimeBoundary and audit emission
+
+## Alternatives
+
+- Persistent Reconciliation Result Store
+- Dashboard Static HTML Report
+- Protocol Stabilization
