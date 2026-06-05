@@ -94,3 +94,4 @@ Koguchi の設計判断を append-only で記録する。変更時は既存 ADR 
 | [025](ADR-025-dashboard-observation-plane.md) | Dashboard Observation Plane | Accepted | DashboardSnapshot, read-only observation plane |
 | [019](ADR-019-joujou-integration.md) | JouJou Integration | Accepted | KoguchiTodoAuditGate, UnconfirmedSideEffectError |
 | [027](ADR-027-persistent-reconciliation-result-store.md) | Persistent Reconciliation Result Store | Accepted | JsonlReconciliationResultStore, JSONL append-only |
+|[028](ADR-028-dashboard-static-html-report.md) | Dashboard Static HTML Report | Accepted | render_html_report, static review artifact |

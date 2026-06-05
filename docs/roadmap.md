@@ -582,3 +582,23 @@ Status: completed.
 - Persistent Reconciliation Result Store
 - Dashboard Static HTML Report
 - Protocol Stabilization
+
+## v0.8.0 Review Preview
+
+Status: completed.
+
+- Dashboard Static HTML Report
+- HTML escaping / No form, button, or script
+- Static read-only review artifact
+
+## v0.9 Candidate: Documentation Polish / Release Scope Definition
+
+- README review flow / architecture diagram cleanup
+- ADR reading path cleanup / example index
+- Threat model refinement / v1.0 scope definition
+
+## Alternatives
+
+- Backend-specific Reconciliation
+- Rust Chokepoint Protocol Stabilization
+- Package / CLI Polish

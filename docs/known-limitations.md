@@ -72,3 +72,14 @@ It does not provide:
 - repair / rollback
 - audit log mutation
 - production monitoring
+
+## Static HTML report
+
+v0.8 Static HTML Report is read-only and local.
+
+It does not provide:
+- web server, remote API, authentication, live updates
+- approval controls, tool execution, job rerun
+- repair / rollback, audit/result mutation
+- Rust chokepoint execution
+- security proof, compliance certification, production monitoring

@@ -169,3 +169,32 @@ It is not production-ready, not a security sandbox, and not a dashboard control 
 - dashboard control plane
 - production hardening
 - full OS/container-level sandboxing
+
+## v0.8.0-review-preview
+
+### Status
+
+Review Preview.
+
+This release provides a static, read-only HTML review artifact for the Koguchi / Context-Aware Harness reference implementation. It is not production-ready, not a security sandbox, not a security proof, not a compliance certification, and not a dashboard control plane.
+
+### Added
+
+- Dashboard Static HTML Report
+- `render_html_report`, `HtmlReportOptions`, HTML escaping
+- Static HTML report: Audit / Reconciliation / Backend / Chokepoint / Limitations sections
+- No form / no button / no script in output
+- ADR-028
+
+### Consolidated
+
+- v0.1-v0.8 full architecture
+- Execution → Audit → Reconciliation → Result → Dashboard → HTML Report closed loop
+- 186 tests, 25 source files, 28 ADRs
+
+### Deferred
+
+- Backend-specific reconciliation
+- Rust chokepoint protocol stabilization
+- Web dashboard server / remote API / dashboard control plane
+- Cryptographic sealing / production hardening / full sandbox
