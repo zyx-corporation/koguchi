@@ -13,7 +13,6 @@ if TYPE_CHECKING:
 from typing import Any, Protocol
 
 
-
 class ReconciliationStatus(StrEnum):
     PENDING = "pending"
     RUNNING = "running"
