@@ -9,8 +9,10 @@ from tests.conftest import make_envelope
 
 def test_write_to_sibling_prefix_dir_is_rejected(tmp_path):
     """/ws と /ws-evil のような前方一致する兄弟ディレクトリへ漏れないこと。"""
-    ws = tmp_path / "ws"; ws.mkdir()
-    evil = tmp_path / "ws-evil"; evil.mkdir()
+    ws = tmp_path / "ws"
+    ws.mkdir()
+    evil = tmp_path / "ws-evil"
+    evil.mkdir()
     store = SQLiteExecutionStore(":memory:")
     proxy = ToolProxy(str(ws), store)
 
@@ -26,7 +28,8 @@ def test_write_to_sibling_prefix_dir_is_rejected(tmp_path):
 
 def test_write_with_parent_traversal_is_rejected(tmp_path):
     """.. による親への脱出も拒否されること。"""
-    ws = tmp_path / "ws"; ws.mkdir()
+    ws = tmp_path / "ws"
+    ws.mkdir()
     store = SQLiteExecutionStore(":memory:")
     proxy = ToolProxy(str(ws), store)
 

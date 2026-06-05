@@ -29,3 +29,13 @@ def test_hash_chain_is_consistent_after_two_writes(workspace):
         ev = json.loads(payload)
         assert ev["previous_hash"] == prev
         prev = h
+
+
+def test_canonical_serialize_raises_on_non_serializable(workspace):
+    """シリアライズ不能なオブジェクトで TypeError が発生する。"""
+    import pytest
+
+    from koguchi.hashchain import canonical_serialize
+
+    with pytest.raises(TypeError):
+        canonical_serialize({"bad": object()})

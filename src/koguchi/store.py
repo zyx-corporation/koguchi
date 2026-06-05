@@ -1,12 +1,12 @@
 import json
 import sqlite3
 from dataclasses import dataclass
-from datetime import datetime, timezone
 from typing import Protocol
 
 from koguchi.errors import StoreWriteError
 from koguchi.events import ExecutionEvent
 from koguchi.hashchain import GENESIS_HASH, compute_hash
+from koguchi.i18n import t
 
 
 class ExecutionStore(Protocol):
@@ -143,9 +143,10 @@ class SQLiteExecutionStore:
                 findings.append(ChainFinding(
                     ok=False, row_index=i, event_id=event_id,
                     diagnosis="previous_hash_mismatch",
-                    detail=(
-                        f"expected {prev_hash[:12]}… "
-                        f"got {str(recorded_prev)[:12]}…"
+                    detail=t(
+                        "chain.previous_hash_mismatch",
+                        expected=prev_hash[:12],
+                        actual=str(recorded_prev)[:12],
                     ),
                 ))
 
@@ -156,9 +157,10 @@ class SQLiteExecutionStore:
                 findings.append(ChainFinding(
                     ok=False, row_index=i, event_id=event_id,
                     diagnosis="hash_mismatch",
-                    detail=(
-                        f"stored={stored_hash[:12]}… "
-                        f"recomputed={recomputed[:12]}…"
+                    detail=t(
+                        "chain.hash_mismatch",
+                        stored=stored_hash[:12],
+                        recomputed=recomputed[:12],
                     ),
                 ))
 

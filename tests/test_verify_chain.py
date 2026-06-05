@@ -61,7 +61,6 @@ def test_verify_chain_detects_previous_hash_mismatch(workspace):
     ).fetchone()
     rowid, payload_str = row
     payload = json.loads(payload_str)
-    original_prev = payload["previous_hash"]
     payload["previous_hash"] = "deadbeef" * 8  # 偽の previous_hash
     store._conn.execute(
         "UPDATE execution_events SET payload = ? WHERE rowid = ?",
