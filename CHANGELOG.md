@@ -212,3 +212,4 @@ This release provides a static, read-only HTML review artifact for the Koguchi /
 - `docs/release/v0.11-toolproxy-reconciliation-spike-closure.md` — v0.11 spike closure note
 - `docs/release/v0.12-scheduler-reconciliation-design-gate.md` — Scheduler reconciliation design gate
 - `docs/release/v0.12-scheduler-reconciliation-spike-closure.md` — v0.12 spike closure note
+- `docs/release/v0.13-reconciliation-persistence-design-gate.md` — reconciliation persistence design gate
