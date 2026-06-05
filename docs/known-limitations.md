@@ -46,7 +46,7 @@ v0.2 JSONL audit store is intended for local single-process use. Multi-process w
 
 ## Reconciliation scope
 
-v0.3 reconciliation is schema-level deferred verification. It does not perform tool-specific filesystem diffing, automatic repair, rollback, or continuous monitoring.
+v0.3 reconciliation is schema-level deferred verification. It does not perform tool-specific filesystem diffing, automatic repair, rollback, or continuous monitoring. Backend-specific reconciliation is under design in v0.10 — see `docs/release/v0.10-backend-reconciliation-design-gate.md`.
 
 ## Rust chokepoint spike
 

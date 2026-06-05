@@ -198,3 +198,9 @@ This release provides a static, read-only HTML review artifact for the Koguchi /
 - Rust chokepoint protocol stabilization
 - Web dashboard server / remote API / dashboard control plane
 - Cryptographic sealing / production hardening / full sandbox
+
+## Unreleased
+
+### Added
+
+- `docs/release/v0.10-backend-reconciliation-design-gate.md` — backend-specific reconciliation design gate (no implementation)
