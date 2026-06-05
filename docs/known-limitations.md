@@ -46,7 +46,7 @@ v0.2 JSONL audit store is intended for local single-process use. Multi-process w
 
 ## Reconciliation scope
 
-v0.3 reconciliation is schema-level deferred verification. v0.10 contains a read-only filesystem diff reconciliation spike (`koguchi/reconciliation/filesystem_diff.py`). v0.11 defines a ToolProxy integration design gate for reconciliation (`docs/release/v0.11-toolproxy-reconciliation-design-gate.md`). Production backend-specific reconciliation, Scheduler integration, ToolProxy reconciliation integration, AuditStore/ResultStore persistence, automatic repair, and rollback remain unimplemented.
+v0.3 reconciliation is schema-level deferred verification. v0.10 contains a read-only filesystem diff reconciliation spike. v0.11 adds a ToolProxy-facing read-only reconciliation spike (`src/koguchi/toolproxy/reconciliation.py`). Production ToolProxy reconciliation integration, Scheduler integration, CLI surface, AuditStore/ResultStore persistence, automatic repair, and rollback remain unimplemented.
 
 ## Rust chokepoint spike
 
