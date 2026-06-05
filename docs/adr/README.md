@@ -22,3 +22,4 @@ Koguchi の設計判断を append-only で記録する。変更時は既存 ADR 
 | [016](ADR-016-reconciliation-v2.md) | Phase 5 — Reconciliation v2（外部 API 実状態との照合）| 5 | Accepted | ReconciliableProvider, ProviderReconciler, Provider 照合フレームワーク |
 | [017](ADR-017-redaction-secret-safety.md) | Phase 6 — Redaction / Secret Safety | 6 | Accepted | RedactionPolicy 4分類, secret guard, export API |
 | [018](ADR-018-rde-t-rde.md) | Phase 7 — RDE / T-RDE Integration | 7 | Accepted | RdeHint, RdeReview, T-RDE helpers, 自動裁定ではない |
+| [019](ADR-019-joujou-integration.md) | Phase 8 — JouJou Practical Integration | 8 | Accepted | TodoInput/Result, KoguchiTodoAuditGate, UnconfirmedSideEffectError |
