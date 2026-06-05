@@ -1,22 +1,66 @@
 # Changelog
 
+All notable changes to this project will be documented in this file.
+
+This project uses Developer Preview milestones before stable releases.
+
 ## v0.1.0-dev-preview
 
-### Added
-- ToolProxy side-effect chokepoint
-- PolicyGate
-- AuditGate
-- Reconciliation
-- Redaction / Secret Safety
-- RDE / T-RDE support
-- RuntimeBoundary
-- ServiceRuntime
-- ADR-001 to ADR-021
-- Minimal example
-- Known limitations
+### Status
 
-### Notes
-- Not a security sandbox
-- Python best-effort runtime boundary
-- Persistent audit store deferred
-- Rust chokepoint deferred
+Developer Preview.
+
+This release is intended for architectural review, local experimentation, and implementation feedback. It is not a stable or security-hardened release.
+
+### Added
+
+- Foundation structure for Koguchi / Context-Aware Harness
+- ToolProxy as the side-effect chokepoint
+- Decision logging (Decision, DecisionStore, decision_ref, intent, context_ref)
+- PolicyGate for envelope / policy-level decisions (allow/deny/require_approval)
+- AuditGate integration (Protocol, KoguchiAuditGate)
+- Reconciliation v2 (ReconciliableProvider, ProviderReconciler)
+- Redaction / Secret Safety (redacted view, secret guard, export API)
+- RDE / T-RDE support (RdeHint, RdeReview, T-RDE helpers)
+- JouJou integration (KoguchiTodoAuditGate, UnconfirmedSideEffectError)
+- RuntimeBoundary for best-effort runtime boundary checks
+- ServiceRuntime as an accountable execution surface
+- AuditEvent / AuditEventSink / InMemoryAuditEventSink
+- ADR-001 to ADR-021
+- ADR index with categorized reading order
+- Architecture overview
+- Developer getting-started guide
+- Minimal tool proxy example
+- Known limitations document
+- v0.1 Developer Preview checklist
+
+### Quality
+
+- ruff: All checks passed
+- pytest: 117 passed
+- mypy: Success, 18 source files
+- minimal example: allow / deny / audit event paths verified
+
+### Security Notes
+
+Koguchi is not a security sandbox.
+
+The current Python implementation provides best-effort runtime constraint checks. RuntimeBoundary can constrain ordinary execution paths, but it does not provide strong isolation against hostile code execution.
+
+Strong isolation is deferred to future work, including Rust chokepoint and OS/container-level enforcement.
+
+### Deferred
+
+- Persistent audit store
+- Reconciliation scheduler
+- Rust chokepoint
+- seccomp
+- container isolation
+- network namespace
+- macOS sandbox
+- full dashboard
+- remote API server
+
+### RDE Summary
+
+v0.1.0-dev-preview preserves the Phase 0–10 architectural structure and converts it into an externally reviewable Developer Preview. It adds documentation, examples, known limitations, and release boundaries without claiming completion or security hardening.

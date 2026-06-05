@@ -17,8 +17,8 @@ from koguchi import (
     SQLiteExecutionStore,
     ToolProxy,
 )
-from koguchi.service_runtime import ServiceRuntime, ServiceRuntimeRequest
 from koguchi.runtime import DefaultRuntimeBoundary
+from koguchi.service_runtime import ServiceRuntime, ServiceRuntimeRequest
 
 
 def main() -> None:
