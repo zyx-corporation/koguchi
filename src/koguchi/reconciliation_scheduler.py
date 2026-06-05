@@ -6,7 +6,12 @@ v0.3 では schema-level deferred verification に限定する。
 
 from dataclasses import dataclass
 from enum import StrEnum
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from koguchi.reconciliation_store import JsonlReconciliationResultStore
 from typing import Any, Protocol
+
 
 
 class ReconciliationStatus(StrEnum):
@@ -70,9 +75,11 @@ class ReconciliationScheduler:
         self,
         audit_events: list[dict[str, Any]],
         job_store: ReconciliationJobStore | None = None,
+        result_store: "JsonlReconciliationResultStore | None" = None,
     ) -> None:
         self._events = audit_events
         self._store = job_store or InMemoryReconciliationJobStore()
+        self._result_store = result_store
 
     def plan(self) -> list[ReconciliationJob]:
         """audit events から reconciliation job を生成する。
@@ -163,12 +170,35 @@ class ReconciliationScheduler:
         self._store.update(job)
 
         msg = "Schema-level verification passed" if passed else "Schema-level verification failed"
-        return ReconciliationResult(
+        result = ReconciliationResult(
             job_id=job.job_id,
             request_id=job.request_id,
             status=job.status,
             message=msg,
         )
+        self._append_result(result, job)
+        return result
+
+    def _append_result(
+        self, result: ReconciliationResult, job: ReconciliationJob,
+    ) -> None:
+        """result store が設定されていれば result を永続化する。"""
+        if self._result_store is None:
+            return
+        backend = job.source_event.get("execution_backend")
+        self._result_store.append(result, source_event_backend=backend)
+
+    def _persist_results(self, results: list[ReconciliationResult]) -> None:
+        """run_pending の結果を永続化する。"""
+        if self._result_store is None:
+            return
+        for result in results:
+            try:
+                job = self._store.get(result.job_id)
+                backend = job.source_event.get("execution_backend")
+            except KeyError:
+                backend = None
+            self._result_store.append(result, source_event_backend=backend)
 
     def _verify(self, job: ReconciliationJob) -> bool:
         """v0.3: schema-level verification。request_id, tool_name, allowed を確認。"""
