@@ -19,6 +19,7 @@ from koguchi.events import ExecutionEvent, ProxyResult
 from koguchi.hashchain import compute_hash
 from koguchi.i18n import t
 from koguchi.policy import ExecutionPolicyGate, PolicyDecision
+from koguchi.runtime import RuntimeBoundary
 from koguchi.store import ExecutionStore
 
 
@@ -68,12 +69,14 @@ class ToolProxy:
         decision_store: DecisionStore | None = None,
         context_resolver: ContextResolver | None = None,
         policy_gate: ExecutionPolicyGate | None = None,
+        runtime_boundary: RuntimeBoundary | None = None,
     ):
         self._workspace = Path(workspace_dir).resolve()
         self._store = store
         self._decision_store = decision_store
         self._context_resolver = context_resolver
         self._policy_gate = policy_gate
+        self._runtime_boundary = runtime_boundary
 
     def _evaluate_policy(self, envelope: ActionEnvelope) -> ProxyResult | None:
         """Policy Gate を評価し、DENY なら REJECTED を返す。ALLOW なら None。"""
@@ -81,6 +84,15 @@ class ToolProxy:
             return None
         result = self._policy_gate.evaluate(envelope)
         if result.decision == PolicyDecision.DENY:
+            return ProxyResult.REJECTED
+        return None
+
+    def _evaluate_runtime_boundary(self, envelope: ActionEnvelope) -> ProxyResult | None:
+        """RuntimeBoundary を評価し、DENY なら REJECTED を返す。ALLOW なら None。"""
+        if self._runtime_boundary is None:
+            return None
+        decision = self._runtime_boundary.evaluate_tool(envelope.tool)
+        if not decision.allowed:
             return ProxyResult.REJECTED
         return None
 
@@ -176,6 +188,9 @@ class ToolProxy:
         if (rejected := self._evaluate_policy(envelope)):
             return rejected
 
+        if (rejected := self._evaluate_runtime_boundary(envelope)):
+            return rejected
+
         record_id = envelope.action_id
 
         # --- INV-1b 第一相 + Phase 2 Decision 記録 ---
@@ -264,6 +279,9 @@ class ToolProxy:
             raise EnvelopeRequiredError(t("err.envelope_required"))
 
         if (rejected := self._evaluate_policy(envelope)):
+            return rejected
+
+        if (rejected := self._evaluate_runtime_boundary(envelope)):
             return rejected
 
         record_id = envelope.action_id
@@ -372,6 +390,9 @@ class ToolProxy:
         if (rejected := self._evaluate_policy(envelope)):
             return rejected
 
+        if (rejected := self._evaluate_runtime_boundary(envelope)):
+            return rejected
+
         record_id = envelope.action_id
 
         prepared = self._prepare_execution(record_id, envelope, intent, context)
@@ -443,6 +464,9 @@ class ToolProxy:
             raise EnvelopeRequiredError(t("err.envelope_required"))
 
         if (rejected := self._evaluate_policy(envelope)):
+            return rejected
+
+        if (rejected := self._evaluate_runtime_boundary(envelope)):
             return rejected
 
         record_id = envelope.action_id

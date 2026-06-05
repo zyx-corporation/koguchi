@@ -21,8 +21,8 @@
 | 6 | Redaction / Secret Safety | ✅ | redacted view, secret guard, export API, ADR 017 |
 | 7 | RDE / T-RDE | ✅ | RdeHint, RdeReview, T-RDE helpers, ADR 018 |
 | 8 | JouJou Practical Integration | ✅ | TodoInput/Result, KoguchiTodoAuditGate, UnconfirmedSideEffectError, ADR 019 |
-| 9 | Runtime Hardening | Next | sandbox, seccomp, Rust chokepoint |
-| 10 | Service Runtime | Planned | daemon, API, dashboard |
+| 9 | Runtime Hardening | ✅ | RuntimeBoundary, DefaultRuntimeBoundary, env filtering, ADR 020 |
+| 10 | Service Runtime | Next | daemon, API, dashboard |
 
 ## 1. 位置づけ
 
