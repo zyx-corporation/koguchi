@@ -216,3 +216,4 @@ This release provides a static, read-only HTML review artifact for the Koguchi /
 - `docs/release/v0.13-reconciliation-persistence-spike-closure.md` — v0.13 spike closure note
 - `docs/release/v0.14-cli-readonly-inspection-design-gate.md` — CLI read-only inspection design gate
 - `docs/release/v0.14-cli-readonly-inspection-spike-closure.md` — v0.14 spike closure note
+- `docs/release/v0.15-reconciliation-framework-consolidation.md` — v0.15 reconciliation framework consolidation
