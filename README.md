@@ -117,3 +117,6 @@ See [docs/known-limitations.md](docs/known-limitations.md).
 Koguchi includes a design-gated, read-only reconciliation framework scaffold covering filesystem diff comparison, ToolProxy routing, Scheduler-originated requests, in-memory observation records, and CLI read-only inspection.
 
 This is not production backend reconciliation. It does not repair, retry, deploy, decide correctness, provide a control plane, or provide a security sandbox. See [v0.15 consolidation](docs/release/v0.15-reconciliation-framework-consolidation.md).
+### Production stabilization status
+
+Koguchi's reconciliation framework is currently a read-only, design-gated scaffold. v0.16 defines production stabilization requirements, but the framework is not production-ready.
