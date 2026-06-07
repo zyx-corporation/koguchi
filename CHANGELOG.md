@@ -219,3 +219,4 @@ This release provides a static, read-only HTML review artifact for the Koguchi /
 - `docs/release/v0.15-reconciliation-framework-consolidation.md` — v0.15 reconciliation framework consolidation
 - `docs/release/v0.16-production-stabilization-design-gate.md` — production stabilization design gate
 - `docs/release/v0.17-stable-schema-protocol-design-gate.md` — stable schema/protocol design gate
+- `docs/release/v0.18-schema-implementation-design-followup.md` — schema implementation scope follow-up
