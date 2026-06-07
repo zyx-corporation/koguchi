@@ -221,3 +221,4 @@ This release provides a static, read-only HTML review artifact for the Koguchi /
 - `docs/release/v0.17-stable-schema-protocol-design-gate.md` — stable schema/protocol design gate
 - `docs/release/v0.18-schema-implementation-design-followup.md` — schema implementation scope follow-up
 - `schemas/reconciliation-result-record.v0.schema.json` — ResultRecord JSON Schema spike
+- `docs/release/v0.19-result-record-json-schema-closure.md` — v0.19 spike closure
