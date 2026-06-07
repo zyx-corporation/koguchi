@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koguchi.dev/reconciliation-result-record.v0.schema.json",
+  "title": "Koguchi Reconciliation Result Record v0",
+  "description": "Observation artifact for reconciliation output. Not a correctness decision.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "result_id",
+    "request_id",
+    "status",
+    "summary",
+    "observed_differences",
+    "missing_artifacts",
+    "stale_artifacts",
+    "audit_gaps",
+    "recommended_review_focus",
+    "boundary"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "koguchi.reconciliation.result.v0"
+    },
+    "result_id": { "type": "string" },
+    "request_id": { "type": "string" },
+    "status": {
+      "enum": [
+        "matched",
+        "mismatch_observed",
+        "missing_expected_artifact",
+        "missing_observed_artifact",
+        "stale_observation",
+        "audit_gap",
+        "inconclusive"
+      ]
+    },
+    "summary": { "type": "string" },
+    "observed_differences": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/FilesystemDifference" }
+    },
+    "missing_artifacts": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "stale_artifacts": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "audit_gaps": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "recommended_review_focus": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "boundary": { "$ref": "#/$defs/ResultRecordBoundary" }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "FilesystemDifference": {
+      "type": "object",
+      "required": ["path", "kind"],
+      "properties": {
+        "path": { "type": "string" },
+        "kind": {
+          "enum": [
+            "added",
+            "removed",
+            "modified",
+            "unchanged",
+            "ignored",
+            "unknown"
+          ]
+        },
+        "expected_sha256": { "type": ["string", "null"] },
+        "observed_sha256": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "ResultRecordBoundary": {
+      "type": "object",
+      "required": [
+        "review_focus_only",
+        "correctness_decision",
+        "enforcement",
+        "approval",
+        "rejection"
+      ],
+      "properties": {
+        "review_focus_only": { "const": true },
+        "correctness_decision": { "const": false },
+        "enforcement": { "const": false },
+        "approval": { "const": false },
+        "rejection": { "const": false }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -17,6 +17,7 @@ dev = [
     "pytest-cov",
     "ruff>=0.5.0",
     "mypy>=1.0",
+    "jsonschema>=4.0",
     "pdoc>=14.0",
 ]
 
