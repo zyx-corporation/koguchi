@@ -120,3 +120,4 @@ This is not production backend reconciliation. It does not repair, retry, deploy
 ### Production stabilization status
 
 Koguchi's reconciliation framework is currently a read-only, design-gated scaffold. v0.16 defines production stabilization requirements, but the framework is not production-ready.
+Stable schema / protocol work is design-gated in v0.17. No stable external protocol is implemented yet.
